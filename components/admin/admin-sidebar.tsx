@@ -14,6 +14,7 @@ import {
   Truck,
   Menu,
   X,
+  Megaphone,
 } from "lucide-react"
 import { useState } from "react"
 
@@ -22,6 +23,7 @@ const navItems = [
   { href: "/admin/leads", label: "Leads", icon: Users },
   { href: "/admin/bookings", label: "Bookings", icon: CalendarDays },
   { href: "/admin/jobs", label: "Jobs", icon: Briefcase },
+  { href: "/admin/google-ads", label: "Google Ads", icon: Megaphone },
 ]
 
 export function AdminSidebar() {
