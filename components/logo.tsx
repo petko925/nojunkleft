@@ -17,107 +17,152 @@ export function Logo({ className, size = "md" }: LogoProps) {
   return (
     <div className={cn("flex items-center gap-3", className)}>
       <div className={cn("relative", sizes[size].icon)}>
-        {/* Artistic truck icon with enhanced design */}
+        {/* Premium artistic truck icon */}
         <svg
-          viewBox="0 0 64 64"
+          viewBox="0 0 80 80"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="w-full h-full"
         >
           <defs>
+            {/* Main gradient for truck body */}
             <linearGradient id="truckGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" className="text-primary" stopColor="currentColor" />
-              <stop offset="100%" stopColor="#FF8C00" />
+              <stop offset="0%" stopColor="#FF7F00" />
+              <stop offset="100%" stopColor="#FF5500" />
             </linearGradient>
+            
+            {/* Accent gradient for details */}
+            <linearGradient id="accentGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#FFB84D" />
+              <stop offset="100%" stopColor="#FF7F00" />
+            </linearGradient>
+            
+            {/* Arrow gradient - vibrant */}
+            <linearGradient id="arrowGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" stopColor="#FF5500" />
+              <stop offset="100%" stopColor="#FFD700" />
+            </linearGradient>
+            
+            {/* Shadow filter */}
             <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-              <feDropShadow dx="1" dy="1" stdDeviation="2" floodOpacity="0.3" />
+              <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.35" />
+            </filter>
+            
+            {/* Glow effect */}
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
             </filter>
           </defs>
           
-          {/* Truck cargo box with gradient */}
+          {/* Background circle for balance */}
+          <circle cx="40" cy="48" r="36" fill="none" stroke="url(#accentGradient)" strokeWidth="0.8" opacity="0.3" />
+          
+          {/* Truck cargo box - premium styling */}
           <rect
-            x="8"
-            y="24"
-            width="32"
-            height="18"
-            rx="3"
+            x="12"
+            y="36"
+            width="38"
+            height="22"
+            rx="4"
             fill="url(#truckGradient)"
             filter="url(#shadow)"
-            style={{ opacity: 0.95 }}
           />
           
-          {/* Truck cabin */}
+          {/* Cargo box highlight - gives depth */}
+          <rect
+            x="12"
+            y="36"
+            width="38"
+            height="5"
+            rx="4"
+            fill="white"
+            opacity="0.15"
+          />
+          
+          {/* Truck cabin - sophisticated design */}
           <path
-            d="M40 28H52C54.2091 28 56 29.7909 56 32V40C56 41.1046 55.1046 42 54 42H40V28Z"
+            d="M50 38C50 36.8954 50.8954 36 52 36H66C68.2091 36 70 37.7909 70 40V54C70 55.1046 69.1046 56 68 56H50V38Z"
             fill="url(#truckGradient)"
             filter="url(#shadow)"
-            style={{ opacity: 0.95 }}
           />
           
-          {/* Cabin window with accent */}
-          <rect x="44" y="30" width="8" height="6" rx="1.5" className="fill-background" />
-          <rect x="44" y="30" width="8" height="6" rx="1.5" className="stroke-accent" strokeWidth="0.5" />
+          {/* Cabin window - modern style */}
+          <rect x="56" y="40" width="10" height="8" rx="1.5" fill="none" stroke="white" strokeWidth="1" opacity="0.4" />
+          <rect x="56" y="40" width="10" height="3" fill="white" opacity="0.2" rx="1" />
           
-          {/* Front bumper accent */}
-          <rect x="52" y="38" width="4" height="4" rx="1" className="fill-accent" />
+          {/* Headlights - adds character */}
+          <circle cx="68" cy="50" r="2.5" fill="white" opacity="0.5" />
+          <circle cx="68" cy="45" r="2" fill="white" opacity="0.4" />
           
-          {/* Front wheels - dynamic design */}
-          <circle cx="18" cy="46" r="6" className="stroke-primary" strokeWidth="2" />
-          <circle cx="18" cy="46" r="3" className="fill-accent" />
-          <circle cx="18" cy="46" r="1.5" className="fill-background" />
+          {/* Connection between cabin and cargo */}
+          <rect x="48" y="42" width="3" height="12" fill="url(#accentGradient)" opacity="0.8" />
           
-          {/* Rear wheels - dynamic design */}
-          <circle cx="50" cy="46" r="6" className="stroke-primary" strokeWidth="2" />
-          <circle cx="50" cy="46" r="3" className="fill-accent" />
-          <circle cx="50" cy="46" r="1.5" className="fill-background" />
-          
-          {/* Dynamic upward arrow with style */}
+          {/* Front wheels - sophisticated */}
           <g filter="url(#shadow)">
-            {/* Arrow shaft */}
-            <path
-              d="M30 18V6"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              className="stroke-accent"
-            />
-            {/* Arrow head - enhanced */}
-            <path
-              d="M24 12L30 2L36 12"
-              fill="url(#truckGradient)"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="stroke-accent"
-            />
+            {/* Left wheel */}
+            <circle cx="22" cy="60" r="8" stroke="url(#truckGradient)" strokeWidth="2.5" />
+            <circle cx="22" cy="60" r="5.5" fill="url(#accentGradient)" opacity="0.6" />
+            <circle cx="22" cy="60" r="3" fill="#1a1a1a" opacity="0.7" />
+            <circle cx="22" cy="60" r="1.2" fill="white" opacity="0.3" />
+            
+            {/* Right wheel */}
+            <circle cx="58" cy="60" r="8" stroke="url(#truckGradient)" strokeWidth="2.5" />
+            <circle cx="58" cy="60" r="5.5" fill="url(#accentGradient)" opacity="0.6" />
+            <circle cx="58" cy="60" r="3" fill="#1a1a1a" opacity="0.7" />
+            <circle cx="58" cy="60" r="1.2" fill="white" opacity="0.3" />
           </g>
           
-          {/* Accent glow around truck */}
+          {/* Dynamic upward arrow with premium styling */}
+          <g filter="url(#glow)">
+            {/* Arrow outer glow */}
+            <circle cx="40" cy="20" r="14" fill="url(#arrowGradient)" opacity="0.15" />
+            
+            {/* Arrow shaft - bold and vibrant */}
+            <line x1="40" y1="28" x2="40" y2="8" stroke="url(#arrowGradient)" strokeWidth="3.5" strokeLinecap="round" />
+            
+            {/* Arrow head - geometric and striking */}
+            <polygon
+              points="40,2 34,12 46,12"
+              fill="url(#arrowGradient)"
+              stroke="#FF5500"
+              strokeWidth="1.5"
+              strokeLinejoin="round"
+            />
+            
+            {/* Arrow accent lines for dimension */}
+            <line x1="37.5" y1="10" x2="42.5" y2="10" stroke="white" strokeWidth="0.8" opacity="0.4" />
+          </g>
+          
+          {/* Premium border accent */}
           <rect
-            x="8"
-            y="24"
-            width="32"
-            height="18"
-            rx="3"
+            x="12"
+            y="36"
+            width="38"
+            height="22"
+            rx="4"
             fill="none"
-            stroke="currentColor"
-            strokeWidth="0.5"
-            className="stroke-accent opacity-50"
+            stroke="url(#accentGradient)"
+            strokeWidth="0.8"
+            opacity="0.4"
           />
         </svg>
       </div>
       
-      {/* Text with enhanced styling */}
+      {/* Premium text styling */}
       <div className="flex flex-col leading-tight">
         <span className={cn(
-          "font-black tracking-tighter text-primary drop-shadow-sm",
+          "font-black tracking-tight text-primary drop-shadow-md",
+          "bg-gradient-to-r from-primary to-orange-600 bg-clip-text text-transparent",
           sizes[size].text
         )}>
           No Junk
         </span>
         <span className={cn(
-          "font-bold tracking-wider text-accent",
+          "font-bold tracking-widest text-accent drop-shadow-sm",
           size === "lg" ? "text-sm" : "text-xs"
         )}>
           LEFT BEHIND
