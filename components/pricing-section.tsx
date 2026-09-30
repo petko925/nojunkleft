@@ -1,158 +1,79 @@
-"use client"
+import { Phone } from "lucide-react"
+import { PriceCard, type PriceItem } from "@/components/pricing/price-card"
+import { HowItWorks } from "@/components/pricing/how-it-works"
+import { PricingFaq } from "@/components/pricing/pricing-faq"
+import { PHONE_DISPLAY, PHONE_HREF } from "@/components/pricing/contact-buttons"
 
-import { Check, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
-import Link from "next/link"
+const weLoad: PriceItem[] = [
+  { name: "1/4 Load", price: "$199", detail: "A few big items or a small pile.", fill: 0.25 },
+  { name: "1/2 Load", price: "$349", detail: "One room or a small garage.", fill: 0.5, popular: true },
+  { name: "3/4 Load", price: "$499", detail: "Multiple rooms or a full garage.", fill: 0.75 },
+  { name: "Full Load", price: "$649", detail: "Whole-house or big project cleanouts.", fill: 1 },
+  { name: "Single Bulky Item", price: "$99", prefix: "from", detail: "One couch, fridge, or curbside pickup." },
+]
 
-const pricingTiers = [
+const trailers: PriceItem[] = [
   {
-    name: "Pickup Truck Load",
-    description: "Small cleanouts and quick jobs",
-    price: 99,
-    priceNote: "Starting at",
-    capacity: "1-3 cubic yards",
-    popular: false,
-    features: [
-      "Few bags of trash or debris",
-      "Small furniture items",
-      "Single room cleanout",
-      "Same-day service available",
-      "Eco-friendly disposal",
-    ],
+    name: "Dump Trailer Rental",
+    price: "$99",
+    unit: "per day",
+    detail: "Large dump trailer. You tow it, load it, and dump it.",
   },
   {
-    name: "Quarter Trailer",
-    description: "Medium projects and renovations",
-    price: 199,
-    priceNote: "Starting at",
-    capacity: "4-8 cubic yards",
-    popular: true,
-    features: [
-      "Multiple furniture items",
-      "Appliances included",
-      "Garage or attic cleanout",
-      "Priority scheduling",
-      "Free on-site estimate",
-      "Recycling included",
-    ],
+    name: "Trailer Drop-Off",
+    price: "$449",
+    detail: "We deliver it, you load it for up to 3 days, we haul it away. Dump fees included up to 2 tons.",
   },
   {
-    name: "Half Trailer",
-    description: "Large cleanouts and estates",
-    price: 399,
-    priceNote: "Starting at",
-    capacity: "9-14 cubic yards",
-    popular: false,
-    features: [
-      "Estate cleanouts",
-      "Multiple rooms",
-      "Heavy items included",
-      "Dedicated crew",
-      "Same-day service",
-      "Donation coordination",
-    ],
-  },
-  {
-    name: "Full Trailer",
-    description: "Construction and major projects",
-    price: 899,
-    priceNote: "Starting at",
-    capacity: "15-20 cubic yards",
-    popular: false,
-    features: [
-      "Full house cleanouts",
-      "Construction debris",
-      "Commercial projects",
-      "Extended crew hours",
-      "Project management",
-      "All disposal fees included",
-    ],
+    name: "Loading Add-On",
+    price: "+$75",
+    unit: "per job",
+    detail: "Don't want to lift? Our crew loads the trailer for you.",
   },
 ]
 
+function PriceGroup({ title, note, items }: { title: string; note: string; items: PriceItem[] }) {
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-1">
+        <h3 className="text-2xl font-bold">{title}</h3>
+        <p className="text-sm text-muted-foreground">{note}</p>
+      </div>
+      <div className="grid gap-5 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((item) => (
+          <PriceCard key={item.name} item={item} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function PricingSection() {
   return (
-    <section id="pricing" className="py-20">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-balance">
-            Transparent Pricing
+    <section id="pricing" className="py-16 md:py-20" aria-labelledby="pricing-heading">
+      <div className="container mx-auto flex max-w-6xl flex-col gap-12 px-4">
+        <header className="flex flex-col gap-3">
+          <h2 id="pricing-heading" className="text-3xl font-bold md:text-4xl text-balance">
+            Flat prices. No guessing.
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
-            No hidden fees. Pay only for the space you use. Get a free estimate before we start.
+          <p className="text-lg leading-relaxed text-muted-foreground text-pretty">
+            Pay by how much of the trailer you fill. Serving Contra Costa County.
           </p>
-        </div>
+          <a
+            href={`tel:${PHONE_HREF}`}
+            className="inline-flex min-h-11 w-fit items-center gap-2 text-lg font-semibold text-primary underline-offset-4 hover:underline"
+          >
+            <Phone className="size-5" aria-hidden="true" />
+            Call or text {PHONE_DISPLAY}
+          </a>
+        </header>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          {pricingTiers.map((tier, i) => (
-            <Card 
-              key={tier.name}
-              className={cn(
-                "bg-card border-border relative flex flex-col",
-                tier.popular && "border-primary ring-2 ring-primary/20"
-              )}
-            >
-              {tier.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">
-                  Most Popular
-                </div>
-              )}
-              <CardHeader>
-                <CardTitle>{tier.name}</CardTitle>
-                <CardDescription>{tier.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-1 flex flex-col">
-                <div className="mb-4">
-                  <span className="text-sm text-muted-foreground">{tier.priceNote}</span>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-primary">${tier.price}</span>
-                  </div>
-                  <span className="text-sm text-muted-foreground">{tier.capacity}</span>
-                </div>
-                
-                <ul className="space-y-3 mb-6 flex-1">
-                  {tier.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-chart-4 shrink-0 mt-0.5" />
-                      <span className="text-sm">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+        <HowItWorks />
 
-                <Button 
-                  asChild
-                  variant={tier.popular ? "default" : "outline"}
-                  className="w-full h-12"
-                >
-                  <Link href="#estimate">
-                    Get Started
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <PriceGroup title="We Load For You" note="Our crew does all the lifting." items={weLoad} />
+        <PriceGroup title="Trailer Rental" note="Do it yourself and save." items={trailers} />
 
-        {/* Additional Info */}
-        <div className="mt-12 bg-secondary rounded-2xl p-8 max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div className="text-2xl font-bold text-primary mb-2">No Surprises</div>
-              <p className="text-sm text-muted-foreground">Price quoted is the price you pay. We never add hidden fees.</p>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-primary mb-2">Free Estimates</div>
-              <p className="text-sm text-muted-foreground">Not sure about the size? We provide free on-site estimates.</p>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-primary mb-2">We Do The Work</div>
-              <p className="text-sm text-muted-foreground">Our team handles all the lifting and hauling. You just point.</p>
-            </div>
-          </div>
-        </div>
+        <PricingFaq />
       </div>
     </section>
   )
