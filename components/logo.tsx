@@ -1,69 +1,117 @@
-"use client"
-
 import { cn } from "@/lib/utils"
 
+export const BRAND_INK = "#19191b"
+export const BRAND_ORANGE = "#ff6a13"
+
+type LogoVariant = "horizontal" | "stacked" | "icon"
+type LogoSize = "sm" | "md" | "lg"
+
 interface LogoProps {
+  variant?: LogoVariant
+  size?: LogoSize
   className?: string
-  size?: "sm" | "md" | "lg"
 }
 
-export function Logo({ className, size = "md" }: LogoProps) {
-  const sizes = {
-    sm: { wrapper: "h-8", text: "text-lg", icon: "w-8 h-8" },
-    md: { wrapper: "h-10", text: "text-xl", icon: "w-10 h-10" },
-    lg: { wrapper: "h-14", text: "text-3xl", icon: "w-14 h-14" },
+const markSizes: Record<LogoSize, string> = {
+  sm: "size-9",
+  md: "size-11",
+  lg: "size-20",
+}
+
+const wordSizes: Record<LogoSize, { top: string; bottom: string }> = {
+  sm: { top: "text-lg", bottom: "text-[0.62rem]" },
+  md: { top: "text-xl", bottom: "text-[0.7rem]" },
+  lg: { top: "text-4xl", bottom: "text-sm" },
+}
+
+// A dump trailer mid-dump: the tilted bed and its open tailgate together form a checkmark.
+// Plain function (not a component) so the same shapes render inside next/og ImageResponse.
+export function renderMarkShapes(ink: string = BRAND_INK, orange: string = BRAND_ORANGE) {
+  return (
+    <g transform="translate(1.5 -5.5)">
+      <path d="M36 48V34" stroke={orange} strokeWidth="3" strokeLinecap="round" />
+      <path
+        d="M20 46.5L44.5 25.9L38.1 18.2L13.6 38.8Z"
+        fill={orange}
+        stroke={orange}
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M13.6 38.8L17.05 35.9L11.26 29L7.81 31.9Z"
+        fill={orange}
+        stroke={orange}
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M28.23 37.63L23.72 32.27M35.13 31.84L30.62 26.48"
+        stroke={ink}
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
+      <rect x="14" y="47" width="37" height="3" rx="1.5" fill={orange} />
+      <path d="M50 48.5H55" stroke={orange} strokeWidth="3" strokeLinecap="round" />
+      <circle cx="24" cy="53" r="5.5" fill={orange} stroke={ink} strokeWidth="2" />
+      <circle cx="35.5" cy="53" r="5.5" fill={orange} stroke={ink} strokeWidth="2" />
+      <circle cx="24" cy="53" r="1.8" fill={ink} />
+      <circle cx="35.5" cy="53" r="1.8" fill={ink} />
+    </g>
+  )
+}
+
+export function LogoMark({ className, title }: { className?: string; title?: string }) {
+  return (
+    <svg
+      viewBox="0 0 64 64"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("shrink-0", className)}
+      role={title ? "img" : undefined}
+      aria-hidden={title ? undefined : true}
+      aria-label={title}
+    >
+      <rect width="64" height="64" rx="14" fill={BRAND_INK} />
+      {renderMarkShapes()}
+    </svg>
+  )
+}
+
+function Wordmark({ size, align = "left" }: { size: LogoSize; align?: "left" | "center" }) {
+  return (
+    <span
+      className={cn(
+        "flex flex-col font-display uppercase leading-none",
+        align === "center" ? "items-center" : "items-start",
+      )}
+    >
+      <span className={cn("font-black tracking-tight", wordSizes[size].top)}>No Junk</span>
+      <span className={cn("mt-1 font-extrabold tracking-[0.18em] text-primary", wordSizes[size].bottom)}>
+        Left Behind
+      </span>
+    </span>
+  )
+}
+
+export function Logo({ variant = "horizontal", size = "md", className }: LogoProps) {
+  if (variant === "icon") {
+    return <LogoMark className={cn(markSizes[size], className)} title="No Junk Left Behind" />
+  }
+
+  if (variant === "stacked") {
+    return (
+      <span className={cn("inline-flex flex-col items-center gap-3", className)}>
+        <LogoMark className={markSizes[size]} />
+        <Wordmark size={size} align="center" />
+        <span className="sr-only">No Junk Left Behind</span>
+      </span>
+    )
   }
 
   return (
-    <div className={cn("flex items-center gap-3", className)}>
-      <div className={cn("relative", sizes[size].icon)}>
-        {/* Truck icon with arrow */}
-        <svg
-          viewBox="0 0 48 48"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full"
-        >
-          {/* Truck body */}
-          <rect
-            x="4"
-            y="18"
-            width="28"
-            height="16"
-            rx="2"
-            className="fill-primary"
-          />
-          {/* Truck cabin */}
-          <path
-            d="M32 22H40C42.2091 22 44 23.7909 44 26V32C44 33.1046 43.1046 34 42 34H32V22Z"
-            className="fill-primary"
-          />
-          {/* Window */}
-          <rect x="34" y="24" width="6" height="4" rx="1" className="fill-background" />
-          {/* Wheels */}
-          <circle cx="12" cy="36" r="4" className="fill-accent" />
-          <circle cx="38" cy="36" r="4" className="fill-accent" />
-          <circle cx="12" cy="36" r="2" className="fill-background" />
-          <circle cx="38" cy="36" r="2" className="fill-background" />
-          {/* Arrow going up and out */}
-          <path
-            d="M18 8L24 2L30 8M24 2V16"
-            stroke="currentColor"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="stroke-accent"
-          />
-        </svg>
-      </div>
-      <div className="flex flex-col leading-none">
-        <span className={cn("font-bold tracking-tight text-primary", sizes[size].text)}>
-          No Junk
-        </span>
-        <span className={cn("font-medium tracking-wide text-foreground/80", size === "lg" ? "text-sm" : "text-xs")}>
-          LEFT BEHIND
-        </span>
-      </div>
-    </div>
+    <span className={cn("inline-flex items-center gap-2.5", className)}>
+      <LogoMark className={markSizes[size]} />
+      <Wordmark size={size} />
+      <span className="sr-only">No Junk Left Behind</span>
+    </span>
   )
 }

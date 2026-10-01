@@ -1,93 +1,53 @@
-"use client"
-
-import { useState } from "react"
-import { Menu, X, Camera, Calendar, Truck, Phone } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Logo } from "@/components/logo"
-import { cn } from "@/lib/utils"
 import Link from "next/link"
+import { Phone } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Logo, LogoMark } from "@/components/logo"
+import { business } from "@/lib/business"
 
-const navItems = [
-  { id: "estimate", label: "AI Estimate", icon: Camera },
-  { id: "schedule", label: "Schedule Pickup", icon: Calendar },
-  { id: "availability", label: "Trailer Availability", icon: Truck },
-  { id: "contact", label: "Contact", icon: Phone },
+const navLinks = [
+  { href: "#pricing", label: "Pricing" },
+  { href: "#how-it-works", label: "How It Works" },
+  { href: "#service-area", label: "Service Area" },
+  { href: "#faq", label: "FAQ" },
 ]
 
-// Scroll to a section by ID, offsetting for the fixed 64px header
-function scrollToSection(id: string, onDone?: () => void) {
-  const el = document.getElementById(id)
-  if (!el) return
-  const offset = 72 // fixed header height + small buffer
-  const top = el.getBoundingClientRect().top + window.scrollY - offset
-  window.scrollTo({ top, behavior: "smooth" })
-  onDone?.()
-}
-
 export function Navigation() {
-  const [isOpen, setIsOpen] = useState(false)
-
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-      <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center">
-          <Logo size="sm" />
+    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-2 px-4 md:h-18">
+        <Link href="/" className="flex items-center rounded-md" aria-label="No Junk Left Behind home">
+          <LogoMark className="size-10 sm:hidden" />
+          <Logo variant="horizontal" size="sm" className="hidden sm:inline-flex" />
         </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => scrollToSection(item.id)}
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-            >
-              {item.label}
-            </button>
-          ))}
-          <Button onClick={() => scrollToSection("estimate")}>
-            Get Free Quote
-          </Button>
-        </div>
+        <nav aria-label="Main" className="hidden lg:block">
+          <ul className="flex items-center gap-1">
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-        {/* Mobile Menu Button */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label={isOpen ? "Close menu" : "Open menu"}
-        >
-          {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </Button>
-      </nav>
-
-      {/* Mobile Navigation */}
-      <div
-        className={cn(
-          "md:hidden fixed inset-x-0 top-16 bg-background border-b border-border transition-all duration-300 ease-in-out",
-          isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
-        )}
-      >
-        <div className="container mx-auto px-4 py-4 flex flex-col gap-2">
-          {navItems.map((item) => {
-            const Icon = item.icon
-            return (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id, () => setIsOpen(false))}
-                className="flex items-center gap-3 p-3 rounded-lg text-foreground hover:bg-secondary transition-colors w-full text-left"
-              >
-                <Icon className="h-5 w-5 text-primary" />
-                <span className="font-medium">{item.label}</span>
-              </button>
-            )
-          })}
-          <Button
-            className="mt-2 w-full h-12"
-            onClick={() => scrollToSection("estimate", () => setIsOpen(false))}
+        <div className="flex items-center gap-2">
+          <a
+            href={business.phoneHref}
+            className="flex h-12 items-center gap-1.5 rounded-md px-2 text-[15px] font-bold tabular-nums text-foreground transition-colors hover:text-primary sm:px-3 sm:text-base"
           >
-            Get Free Quote
+            <Phone className="size-4 text-primary" aria-hidden="true" />
+            <span>
+              <span className="sr-only">Call </span>
+              {business.phoneDisplay}
+            </span>
+          </a>
+          <Button asChild className="h-11 px-3.5 font-bold sm:h-12 sm:px-5">
+            <a href="#estimate">Get My Quote</a>
           </Button>
         </div>
       </div>

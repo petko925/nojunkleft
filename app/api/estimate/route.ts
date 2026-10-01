@@ -2,6 +2,7 @@ import { generateText } from "ai"
 import twilio from "twilio"
 import { createClient } from "@supabase/supabase-js"
 import { resend, FROM_EMAIL, BUSINESS_EMAIL } from "@/lib/resend"
+import { estimateSizeToTier } from "@/lib/business"
 
 // Supabase client for server-side operations
 const supabase = createClient(
@@ -27,11 +28,12 @@ const twilioClient = twilio(
 // ============================================================
 // PRICING CONFIGURATION - Easy to edit
 // ============================================================
-const PRICING: Record<string, { min: number; max: number }> = {
-  small: { min: 99, max: 199 },
-  medium: { min: 199, max: 399 },
-  large: { min: 399, max: 599 },
-  xl: { min: 599, max: 899 },
+const PRICING: Record<string, { min: number; max: number }> = Object.fromEntries(
+  Object.entries(estimateSizeToTier).map(([size, tier]) => [size, { min: tier.price, max: tier.price }]),
+)
+
+function formatQuote(min: number, max: number) {
+  return min === max ? `$${min}` : `$${min}–$${max}`
 }
 
 const VALID_SIZES = ["small", "medium", "large", "xl"] as const
@@ -39,10 +41,10 @@ type LoadSize = (typeof VALID_SIZES)[number]
 type Confidence = "low" | "medium" | "high"
 
 const sizeLabels: Record<LoadSize, string> = {
-  small: "Small (1-3 cubic yards)",
-  medium: "Medium (4-8 cubic yards)",
-  large: "Large (9-14 cubic yards)",
-  xl: "Extra Large (15-20 cubic yards)",
+  small: "1/4 load",
+  medium: "1/2 load",
+  large: "3/4 load",
+  xl: "Full load",
 }
 
 interface EstimateSuccess {
@@ -342,7 +344,7 @@ JSON format:
         {
           from: FROM_EMAIL,
           to: BUSINESS_EMAIL,
-          subject: `New Quote Request - ${sizeLabels[result.estimatedSize]} - $${result.quoteMin}–$${result.quoteMax}`,
+          subject: `New Quote Request - ${sizeLabels[result.estimatedSize]} - ${formatQuote(result.quoteMin, result.quoteMax)}`,
           html: `
             <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0f1628;color:#ffffff;border-radius:12px;overflow:hidden;">
               <div style="background:#e07b23;padding:24px 32px;">
@@ -375,7 +377,7 @@ JSON format:
 
                 <div style="margin:24px 0;background:#1a2240;border-radius:10px;padding:20px;border-left:4px solid #e07b23;">
                   <p style="margin:0 0 4px;color:#a0aec0;font-size:12px;text-transform:uppercase;letter-spacing:1px;">AI Estimate</p>
-                  <p style="margin:0;font-size:24px;font-weight:700;color:#e07b23;">$${result.quoteMin} – $${result.quoteMax}</p>
+                  <p style="margin:0;font-size:24px;font-weight:700;color:#e07b23;">${formatQuote(result.quoteMin, result.quoteMax)}</p>
                   <p style="margin:4px 0 0;color:#cbd5e0;">${sizeLabels[result.estimatedSize]} &bull; Confidence: ${result.confidence}</p>
                   <p style="margin:12px 0 0;color:#a0aec0;font-size:13px;">${result.explanation}</p>
                 </div>
@@ -420,7 +422,7 @@ JSON format:
 
                 <div style="margin:24px 0;background:#1a2240;border-radius:10px;padding:24px;text-align:center;border:1px solid #2d3a5a;">
                   <p style="margin:0 0 4px;color:#a0aec0;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Estimated Quote</p>
-                  <p style="margin:0;font-size:36px;font-weight:700;color:#e07b23;">$${result.quoteMin} – $${result.quoteMax}</p>
+                  <p style="margin:0;font-size:36px;font-weight:700;color:#e07b23;">${formatQuote(result.quoteMin, result.quoteMax)}</p>
                   <p style="margin:8px 0 0;color:#cbd5e0;">${sizeLabels[result.estimatedSize]}</p>
                 </div>
 
@@ -460,7 +462,7 @@ JSON format:
         const customerPhoneE164 = `+1${normalizedPhone.slice(-10)}`
 
         // SMS to customer with their estimate
-        const customerMessage = `Hi! Your No Junk Left Behind estimate is ready: $${result.quoteMin}-$${result.quoteMax} (${sizeLabels[result.estimatedSize]}). Our team will call you shortly. Reply STOP to opt out.`
+        const customerMessage = `Hi! Your No Junk Left Behind estimate is ready: ${formatQuote(result.quoteMin, result.quoteMax)} (${sizeLabels[result.estimatedSize]}). Our team will call you shortly. Reply STOP to opt out.`
 
         await twilioClient.messages.create({
           body: customerMessage,
@@ -470,7 +472,7 @@ JSON format:
         console.log("[estimate] Customer SMS sent to:", customerPhoneE164)
 
         // SMS to business phone numbers with customer info
-        const businessMessage = `New Junk Removal Lead:\n${address}\nEst: $${result.quoteMin}-$${result.quoteMax} (${sizeLabels[result.estimatedSize]})\nPhone: ${phone}\nEmail: ${email}\n${notes ? `Notes: ${notes}` : ""}`
+        const businessMessage = `New Junk Removal Lead:\n${address}\nEst: ${formatQuote(result.quoteMin, result.quoteMax)} (${sizeLabels[result.estimatedSize]})\nPhone: ${phone}\nEmail: ${email}\n${notes ? `Notes: ${notes}` : ""}`
 
         for (const businessPhone of BUSINESS_PHONES) {
           const businessPhoneE164 = `+1${businessPhone.slice(-10)}`
