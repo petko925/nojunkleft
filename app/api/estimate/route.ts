@@ -4,17 +4,14 @@ import { createClient } from "@supabase/supabase-js"
 import { resend, FROM_EMAIL, BUSINESS_EMAIL } from "@/lib/resend"
 import { estimateSizeToTier } from "@/lib/business"
 
-// Supabase client for server-side operations
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// Clients are created per request so the build doesn't need their env vars at module load.
+function getSupabase() {
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
+}
 
-// Twilio client
-const twilioClient = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-)
+function getTwilioClient() {
+  return twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
+}
 
 /**
  * Junk Removal Quote Estimator API
@@ -80,6 +77,8 @@ export async function POST(req: Request): Promise<Response> {
   console.log("[estimate] POST request received")
 
   try {
+    const supabase = getSupabase()
+
     // Parse request body
     let body: { image?: string; fullName?: string; address?: string; phone?: string; email?: string; notes?: string }
     try {
@@ -457,6 +456,7 @@ JSON format:
     // ============================================================
     if (process.env.TWILIO_PHONE_NUMBER) {
       try {
+        const twilioClient = getTwilioClient()
         const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER
         const normalizedPhone = phone.replace(/\D/g, "")
         const customerPhoneE164 = `+1${normalizedPhone.slice(-10)}`

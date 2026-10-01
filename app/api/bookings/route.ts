@@ -2,14 +2,15 @@ import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 import { resend, FROM_EMAIL, BUSINESS_EMAIL } from "@/lib/resend"
 
-// Use service role client to bypass RLS for public form submissions
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// Service role client bypasses RLS for public form submissions. Created per request
+// so the build doesn't need Supabase env vars at module load.
+function getSupabaseAdmin() {
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
+}
 
 export async function POST(req: NextRequest) {
   try {
+    const supabaseAdmin = getSupabaseAdmin()
     const {
       trailer_id,
       date,
@@ -183,7 +184,7 @@ export async function POST(req: NextRequest) {
 // GET bookings (for dashboard or other needs)
 export async function GET(req: NextRequest) {
   try {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from("bookings")
       .select(`
         *,
