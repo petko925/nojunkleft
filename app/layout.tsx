@@ -24,14 +24,6 @@ export const metadata: Metadata = {
     description: 'Fast, reliable junk and garbage removal service. Get instant AI-powered estimates and schedule pickups with ease.',
     url: 'https://www.nojunkleft.com',
     siteName: 'No Junk Left Behind',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'No Junk Left Behind - Professional Junk Removal',
-      },
-    ],
     locale: 'en_US',
     type: 'website',
   },
@@ -39,7 +31,6 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'No Junk Left Behind | Professional Junk Removal',
     description: 'Fast, reliable junk and garbage removal service. Get instant AI-powered estimates and schedule pickups with ease.',
-    images: ['/og-image.jpg'],
   },
   icons: {
     icon: [
