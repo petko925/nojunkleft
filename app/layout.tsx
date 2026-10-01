@@ -1,27 +1,34 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Space_Grotesk } from 'next/font/google'
+import { Inter, Archivo } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
-import './globals.css'
+import './site.css'
 
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: '--font-inter'
-});
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
 
-const spaceGrotesk = Space_Grotesk({ 
-  subsets: ["latin"],
-  variable: '--font-space-grotesk'
-});
+const archivo = Archivo({
+  subsets: ['latin'],
+  variable: '--font-archivo',
+  display: 'swap',
+})
+
+const title = 'Junk Removal in Contra Costa County | No Junk Left Behind'
+const description =
+  'Fixed-price junk removal in Concord, Walnut Creek, Antioch and all of Contra Costa County. Loads from $199, single items from $99, dump trailer rental $99/day. Call or text 707-298-4268.'
 
 export const metadata: Metadata = {
-  title: 'No Junk Left Behind | Professional Junk Removal',
-  description: 'Fast, reliable junk and garbage removal service. Get instant AI-powered estimates and schedule pickups with ease.',
+  title,
+  description,
   generator: 'v0.app',
   manifest: '/manifest.json',
   metadataBase: new URL('https://www.nojunkleft.com'),
+  alternates: { canonical: '/' },
   openGraph: {
-    title: 'No Junk Left Behind | Professional Junk Removal',
-    description: 'Fast, reliable junk and garbage removal service. Get instant AI-powered estimates and schedule pickups with ease.',
+    title,
+    description,
     url: 'https://www.nojunkleft.com',
     siteName: 'No Junk Left Behind',
     locale: 'en_US',
@@ -29,33 +36,19 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'No Junk Left Behind | Professional Junk Removal',
-    description: 'Fast, reliable junk and garbage removal service. Get instant AI-powered estimates and schedule pickups with ease.',
+    title,
+    description,
   },
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
   },
+  formatDetection: { telephone: true },
 }
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  themeColor: '#1a1f35',
+  themeColor: '#fbfaf8',
 }
 
 export default function RootLayout({
@@ -65,7 +58,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-background">
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${archivo.variable} font-sans antialiased`}>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

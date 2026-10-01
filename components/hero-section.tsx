@@ -1,94 +1,83 @@
-"use client"
-
-import { ArrowRight, Camera, Sparkles, Truck } from "lucide-react"
+import Image from "next/image"
+import { BadgeDollarSign, Camera, Clock, Phone, ShieldCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Logo } from "@/components/logo"
-
-function scrollTo(id: string) {
-  const el = document.getElementById(id)
-  if (!el) return
-  const top = el.getBoundingClientRect().top + window.scrollY - 72
-  window.scrollTo({ top, behavior: "smooth" })
-}
+import { business, loadTiers, singleItemPrice } from "@/lib/business"
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-16">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-secondary via-background to-background" />
-      
-      {/* Animated lines */}
-      <div className="absolute inset-0 overflow-hidden">
-        <svg className="absolute w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" className="[stop-color:var(--primary)]" stopOpacity="0" />
-              <stop offset="50%" className="[stop-color:var(--primary)]" stopOpacity="1" />
-              <stop offset="100%" className="[stop-color:var(--accent)]" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M-100 300 Q 200 200 500 350 T 1100 300 T 1700 350"
-            fill="none"
-            stroke="url(#line-gradient)"
-            strokeWidth="2"
-            className="animate-pulse"
-          />
-          <path
-            d="M-100 400 Q 300 350 600 450 T 1200 400 T 1800 450"
-            fill="none"
-            stroke="url(#line-gradient)"
-            strokeWidth="2"
-            className="animate-pulse"
-            style={{ animationDelay: "0.5s" }}
-          />
-        </svg>
-      </div>
-
-      <div className="relative container mx-auto px-4 py-12 md:py-20">
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-8">
-            <Sparkles className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium text-primary">AI-Powered Estimates</span>
-          </div>
-
-          {/* Logo Large */}
-          <div className="mb-8">
-            <Logo size="lg" />
-          </div>
-
-          {/* Headline */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance mb-6">
-            <span className="text-foreground">Your Junk.</span>{" "}
-            <span className="text-primary">Gone Fast.</span>
+    <section aria-labelledby="hero-title" className="bg-ink text-ink-foreground">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 pb-12 pt-10 md:pb-16 md:pt-14 md:grid-cols-[1.1fr_1fr] md:items-center lg:gap-12">
+        <div className="flex flex-col gap-6">
+          <p className="text-sm font-bold uppercase tracking-[0.16em] text-primary">
+            Fixed-price junk hauling · {business.region}, {business.state}
+          </p>
+          <h1
+            id="hero-title"
+            className="text-balance text-4xl font-black uppercase leading-[0.95] sm:text-5xl lg:text-6xl"
+          >
+            Junk Removal in Contra Costa County
           </h1>
-
-          {/* Subheadline */}
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10 text-pretty">
-            Professional junk removal made simple. Snap a photo, get an instant AI estimate, 
-            and schedule your pickup in minutes. We handle everything from furniture to construction debris.
+          <p className="max-w-xl text-pretty text-lg leading-relaxed text-ink-muted">
+            Tell us what&apos;s going, get a fixed price, and we haul it all away &mdash; often the same day.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <Button size="lg" className="h-14 px-8 text-lg gap-2" onClick={() => scrollTo("estimate")}>
-              <Camera className="h-5 w-5" />
-              Get AI Estimate
-              <ArrowRight className="h-5 w-5" />
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Button asChild size="lg" className="h-14 px-6 text-base font-bold">
+              <a href={business.phoneHref}>
+                <Phone className="size-5" aria-hidden="true" />
+                Call {business.phoneDisplay}
+              </a>
             </Button>
-            <Button variant="outline" size="lg" className="h-14 px-8 text-lg gap-2" onClick={() => scrollTo("schedule")}>
-              <Truck className="h-5 w-5" />
-              Schedule Pickup
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="h-14 border-ink-foreground/30 bg-transparent px-6 text-base font-bold text-ink-foreground hover:bg-ink-foreground/10 hover:text-ink-foreground"
+            >
+              <a href="#estimate">
+                <Camera className="size-5" aria-hidden="true" />
+                Get a Photo Estimate
+              </a>
             </Button>
           </div>
 
-          {/* Tagline */}
-          <div className="mt-12 pt-8 border-t border-border">
-            <p className="text-muted-foreground text-lg md:text-xl font-medium text-balance">
-              Fast, reliable junk removal for the Bay Area. Same-day service available.
-            </p>
-          </div>
+          <p className="text-base text-ink-muted">
+            Loads from <strong className="font-bold text-ink-foreground">${loadTiers[0].price}</strong> · Single items
+            from <strong className="font-bold text-ink-foreground">${singleItemPrice}</strong> ·{" "}
+            <a href="#pricing" className="font-semibold text-primary underline underline-offset-4">
+              See all prices
+            </a>
+          </p>
+
+          <ul
+            aria-label="Why customers trust us"
+            className="flex flex-col gap-3 border-t border-ink-border pt-6 sm:flex-row sm:flex-wrap sm:gap-x-6"
+          >
+            <li className="flex items-center gap-2 text-sm font-semibold">
+              <BadgeDollarSign className="size-5 text-primary" aria-hidden="true" />
+              Fixed Upfront Prices
+            </li>
+            <li className="flex items-center gap-2 text-sm font-semibold">
+              <ShieldCheck className="size-5 text-primary" aria-hidden="true" />
+              Licensed &amp; Insured
+            </li>
+            <li className="flex items-center gap-2 text-sm font-semibold">
+              <Clock className="size-5 text-primary" aria-hidden="true" />
+              Same-Day Service Available
+            </li>
+          </ul>
+        </div>
+
+        <div className="relative overflow-hidden rounded-xl border border-ink-border">
+          <Image
+            src="/images/hero-crew.webp"
+            alt="No Junk Left Behind crew loading an old sofa into a dump trailer in a Contra Costa driveway"
+            width={1200}
+            height={900}
+            priority
+            sizes="(min-width: 768px) 50vw, 100vw"
+            className="aspect-[4/3] h-auto w-full object-cover"
+          />
         </div>
       </div>
     </section>
