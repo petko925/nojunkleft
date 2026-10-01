@@ -1,157 +1,110 @@
-"use client"
-
-import { Check, ArrowRight } from "lucide-react"
+import { Check, Phone, Sofa } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { LoadGauge } from "@/components/load-gauge"
 import { cn } from "@/lib/utils"
-import Link from "next/link"
+import { business, loadingAddOnPrice, loadTiers, singleItemPrice, trailerOptions } from "@/lib/business"
 
-const pricingTiers = [
-  {
-    name: "Pickup Truck Load",
-    description: "Small cleanouts and quick jobs",
-    price: 99,
-    priceNote: "Starting at",
-    capacity: "1-3 cubic yards",
-    popular: false,
-    features: [
-      "Few bags of trash or debris",
-      "Small furniture items",
-      "Single room cleanout",
-      "Same-day service available",
-      "Eco-friendly disposal",
-    ],
-  },
-  {
-    name: "Quarter Trailer",
-    description: "Medium projects and renovations",
-    price: 199,
-    priceNote: "Starting at",
-    capacity: "4-8 cubic yards",
-    popular: true,
-    features: [
-      "Multiple furniture items",
-      "Appliances included",
-      "Garage or attic cleanout",
-      "Priority scheduling",
-      "Free on-site estimate",
-      "Recycling included",
-    ],
-  },
-  {
-    name: "Half Trailer",
-    description: "Large cleanouts and estates",
-    price: 399,
-    priceNote: "Starting at",
-    capacity: "9-14 cubic yards",
-    popular: false,
-    features: [
-      "Estate cleanouts",
-      "Multiple rooms",
-      "Heavy items included",
-      "Dedicated crew",
-      "Same-day service",
-      "Donation coordination",
-    ],
-  },
-  {
-    name: "Full Trailer",
-    description: "Construction and major projects",
-    price: 899,
-    priceNote: "Starting at",
-    capacity: "15-20 cubic yards",
-    popular: false,
-    features: [
-      "Full house cleanouts",
-      "Construction debris",
-      "Commercial projects",
-      "Extended crew hours",
-      "Project management",
-      "All disposal fees included",
-    ],
-  },
-]
+function CallButton({ label, className }: { label: string; className?: string }) {
+  return (
+    <Button asChild className={cn("h-12 w-full text-base font-bold", className)}>
+      <a href={business.phoneHref} aria-label={`Call ${business.phoneDisplay} to book: ${label}`}>
+        <Phone className="size-4" aria-hidden="true" />
+        Call to Book
+      </a>
+    </Button>
+  )
+}
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="py-20">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-balance">
-            Transparent Pricing
+    <section id="pricing" aria-labelledby="pricing-title" className="bg-secondary">
+      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-14 md:py-20">
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-bold uppercase tracking-[0.16em] text-primary">Pricing</p>
+          <h2 id="pricing-title" className="text-balance text-3xl font-black uppercase md:text-4xl">
+            Pay by how much trailer you fill
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
-            No hidden fees. Pay only for the space you use. Get a free estimate before we start.
+          <p className="max-w-2xl text-pretty text-lg text-muted-foreground">
+            We load for you. Pick the size that looks closest &mdash; the orange shows how full the trailer gets.
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          {pricingTiers.map((tier, i) => (
-            <Card 
-              key={tier.name}
-              className={cn(
-                "bg-card border-border relative flex flex-col",
-                tier.popular && "border-primary ring-2 ring-primary/20"
-              )}
-            >
-              {tier.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">
-                  Most Popular
-                </div>
-              )}
-              <CardHeader>
-                <CardTitle>{tier.name}</CardTitle>
-                <CardDescription>{tier.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-1 flex flex-col">
-                <div className="mb-4">
-                  <span className="text-sm text-muted-foreground">{tier.priceNote}</span>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-primary">${tier.price}</span>
+        <div className="flex flex-col gap-4">
+          <h3 className="text-sm font-bold uppercase tracking-[0.16em] text-muted-foreground">We load for you</h3>
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {loadTiers.map((tier) => (
+              <li
+                key={tier.id}
+                className={cn(
+                  "relative flex flex-col gap-4 rounded-xl border bg-card p-5",
+                  tier.popular ? "border-primary ring-2 ring-primary" : "border-border",
+                )}
+              >
+                {tier.popular && (
+                  <span className="absolute -top-3 left-5 rounded-full bg-primary px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-primary-foreground">
+                    Most Popular
+                  </span>
+                )}
+                <div className="flex items-center gap-4 lg:flex-col lg:items-stretch">
+                  <LoadGauge fraction={tier.fraction} className="w-28 shrink-0 lg:w-full" />
+                  <div className="flex flex-col">
+                    <h4 className="font-display text-lg font-extrabold uppercase">{tier.name}</h4>
+                    <p className="font-display text-4xl font-black tabular-nums">${tier.price}</p>
                   </div>
-                  <span className="text-sm text-muted-foreground">{tier.capacity}</span>
                 </div>
-                
-                <ul className="space-y-3 mb-6 flex-1">
-                  {tier.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-chart-4 shrink-0 mt-0.5" />
-                      <span className="text-sm">{feature}</span>
+                <p className="flex-1 text-pretty text-sm leading-relaxed text-muted-foreground">{tier.fits}</p>
+                <CallButton label={`${tier.name}, $${tier.price}`} className={tier.popular ? undefined : "bg-ink text-ink-foreground hover:bg-ink/90"} />
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex flex-col gap-4 rounded-xl border border-border bg-card p-5 sm:flex-row sm:items-center">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-accent text-primary">
+              <Sofa className="size-6" aria-hidden="true" />
+            </span>
+            <div className="flex flex-1 flex-col">
+              <h4 className="font-display text-lg font-extrabold uppercase">
+                Single bulky item &mdash; from ${singleItemPrice}
+              </h4>
+              <p className="text-sm text-muted-foreground">One couch, mattress, fridge, hot tub cover, or treadmill.</p>
+            </div>
+            <CallButton label={`single bulky item from $${singleItemPrice}`} className="bg-ink text-ink-foreground hover:bg-ink/90 sm:w-auto sm:px-6" />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4 rounded-2xl bg-ink p-5 text-ink-foreground md:p-8">
+          <div className="flex flex-col gap-1">
+            <h3 className="font-display text-2xl font-black uppercase">Trailer Rental</h3>
+            <p className="text-ink-muted">Doing it yourself or need a few days to fill it? Rent our dump trailer.</p>
+          </div>
+          <ul className="grid gap-4 md:grid-cols-2">
+            {trailerOptions.map((option) => (
+              <li key={option.id} className="flex flex-col gap-4 rounded-xl border border-ink-border p-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex flex-col">
+                    <h4 className="font-display text-lg font-extrabold uppercase">{option.name}</h4>
+                    <p className="text-sm font-semibold text-primary">{option.tagline}</p>
+                  </div>
+                  <p className="font-display text-4xl font-black tabular-nums">
+                    ${option.price}
+                    {option.unit && <span className="text-base font-bold text-ink-muted">{option.unit}</span>}
+                  </p>
+                </div>
+                <ul className="flex flex-1 flex-col gap-2">
+                  {option.details.map((detail) => (
+                    <li key={detail} className="flex gap-2 text-sm text-ink-muted">
+                      <Check className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+                      {detail}
                     </li>
                   ))}
                 </ul>
-
-                <Button 
-                  asChild
-                  variant={tier.popular ? "default" : "outline"}
-                  className="w-full h-12"
-                >
-                  <Link href="#estimate">
-                    Get Started
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Additional Info */}
-        <div className="mt-12 bg-secondary rounded-2xl p-8 max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div className="text-2xl font-bold text-primary mb-2">No Surprises</div>
-              <p className="text-sm text-muted-foreground">Price quoted is the price you pay. We never add hidden fees.</p>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-primary mb-2">Free Estimates</div>
-              <p className="text-sm text-muted-foreground">Not sure about the size? We provide free on-site estimates.</p>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-primary mb-2">We Do The Work</div>
-              <p className="text-sm text-muted-foreground">Our team handles all the lifting and hauling. You just point.</p>
-            </div>
-          </div>
+                <CallButton label={`${option.name}, $${option.price}${option.unit}`} />
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm text-ink-muted">
+            Want us to do the loading? Add a crew for <strong className="text-ink-foreground">+${loadingAddOnPrice}/job</strong>.
+          </p>
         </div>
       </div>
     </section>

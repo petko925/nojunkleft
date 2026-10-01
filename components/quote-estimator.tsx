@@ -49,24 +49,24 @@ const sizeInfo: Record<LoadSize, {
   color: string
 }> = {
   small: {
-    label: "Small Load",
-    description: "Pickup truck size (1-3 cubic yards)",
-    color: "bg-emerald-500",
+    label: "1/4 Load",
+    description: "About one pickup truck bed",
+    color: "bg-primary/40",
   },
   medium: {
-    label: "Medium Load",
-    description: "Quarter trailer (4-8 cubic yards)",
-    color: "bg-amber-500",
+    label: "1/2 Load",
+    description: "About two pickup truck beds",
+    color: "bg-primary/60",
   },
   large: {
-    label: "Large Load",
-    description: "Half to 3/4 trailer (9-14 cubic yards)",
-    color: "bg-orange-500",
+    label: "3/4 Load",
+    description: "A one-car garage cleanout",
+    color: "bg-primary/80",
   },
   xl: {
-    label: "Extra Large Load",
-    description: "Full trailer (15-20 cubic yards)",
-    color: "bg-red-500",
+    label: "Full Load",
+    description: "A packed garage or full cleanout",
+    color: "bg-primary",
   },
 }
 
@@ -352,9 +352,11 @@ export function QuoteEstimator() {
 
                   {/* Quote range */}
                   <div className="bg-primary/10 border border-primary/30 rounded-xl p-6 text-center">
-                    <div className="text-sm text-muted-foreground mb-2">Your Estimated Quote</div>
-                    <div className="text-4xl font-bold text-primary">
-                      ${result.quoteMin} - ${result.quoteMax}
+                    <div className="text-sm text-muted-foreground mb-2">Your Estimated Price</div>
+                    <div className="text-4xl font-black font-display">
+                      {result.quoteMin === result.quoteMax
+                        ? `$${result.quoteMin}`
+                        : `$${result.quoteMin} – $${result.quoteMax}`}
                     </div>
                     <p className="text-sm text-muted-foreground mt-2">
                       Final price confirmed on-site
