@@ -11,7 +11,7 @@ const localBusiness = {
   telephone: "+1-707-298-4268",
   email: business.email,
   image: `${business.url}/images/hero-crew.webp`,
-  logo: `${business.url}/icon.svg`,
+  logo: `${business.url}/icon/512`,
   priceRange: `$${singleItemPrice}–$${loadTiers[loadTiers.length - 1].price}`,
   address: {
     "@type": "PostalAddress",
