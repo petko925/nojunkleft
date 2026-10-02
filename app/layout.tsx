@@ -23,7 +23,6 @@ export const metadata: Metadata = {
   title,
   description,
   generator: 'v0.app',
-  manifest: '/manifest.json',
   metadataBase: new URL('https://www.nojunkleft.com'),
   alternates: { canonical: '/' },
   openGraph: {
@@ -38,9 +37,6 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title,
     description,
-  },
-  icons: {
-    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
   },
   formatDetection: { telephone: true },
 }
