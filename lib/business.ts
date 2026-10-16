@@ -102,7 +102,15 @@ export const trailerOptions = [
   },
 ] as const
 
-export const loadingAddOnPrice = 75
+export const payAsYouFill = {
+  name: "Pay As You Fill",
+  tagline: "Not sure how much you have?",
+  steps: [
+    "We show up with the trailer and load everything for you",
+    "When we're done, we look at how full the trailer is together",
+    "You pay the 1/4, 1/2, 3/4, or full load price — nothing more",
+  ],
+} as const
 
 /** Maps AI estimator size keys to load tiers so photo estimates match the menu. */
 export const estimateSizeToTier = {

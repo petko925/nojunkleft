@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
+import { business } from "@/lib/business"
 import { compressImage } from "@/lib/compress-image"
 import { getAddressSuggestions, loadGooglePlacesScript } from "@/lib/address-autocomplete"
 
@@ -358,8 +359,8 @@ export function QuoteEstimator() {
                         ? `$${result.quoteMin}`
                         : `$${result.quoteMin} – $${result.quoteMax}`}
                     </div>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Final price confirmed on-site
+                    <p className="text-sm text-muted-foreground mt-2 text-pretty">
+                      AI quotes are subject to approval. Final price is confirmed on-site.
                     </p>
                   </div>
 
@@ -559,12 +560,27 @@ export function QuoteEstimator() {
                   </Button>
 
                   <p className="text-xs text-center text-muted-foreground">
-                    By submitting, you agree to be contacted by No Junk Left Behind about your quote.
+                    AI quotes are subject to approval. By submitting, you agree to be contacted by No Junk Left Behind about your quote.
                   </p>
                 </form>
               )}
             </CardContent>
           </Card>
+
+          <div className="mt-6 flex flex-col gap-4 rounded-xl border border-border bg-card p-5 sm:flex-row sm:items-center">
+            <div className="flex flex-1 flex-col gap-1">
+              <h3 className="font-semibold">Rather see it in person?</h3>
+              <p className="text-sm leading-relaxed text-muted-foreground text-pretty">
+                AI quotes are subject to approval by our team. If you&apos;d like a firm number first, request a free in-person estimate and we&apos;ll come take a look.
+              </p>
+            </div>
+            <Button asChild variant="outline" className="h-12 gap-2 sm:w-auto">
+              <a href={business.phoneHref} aria-label={`Call ${business.phoneDisplay} to request an in-person estimate`}>
+                <Phone className="h-4 w-4" aria-hidden="true" />
+                Request In-Person Estimate
+              </a>
+            </Button>
+          </div>
         </div>
       </div>
     </section>
