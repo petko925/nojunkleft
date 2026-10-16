@@ -105,10 +105,13 @@ export function PricingSection() {
 
         <div className="flex flex-col gap-4 rounded-2xl bg-ink p-5 text-ink-foreground md:p-8">
           <div className="flex flex-col gap-1">
-            <h3 className="font-display text-2xl font-black uppercase">Trailer Rental</h3>
-            <p className="text-ink-muted">Doing it yourself or need a few days to fill it? Rent our dump trailer.</p>
+            <h3 className="font-display text-2xl font-black uppercase">Trailer &amp; Truck Rental</h3>
+            <p className="text-ink-muted">
+              Doing it yourself or need a few days to fill it? Rent our 8 or 15 cubic yard dump trailer, or our dump
+              truck for heavy jobs.
+            </p>
           </div>
-          <ul className="grid gap-4 md:grid-cols-2">
+          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {trailerOptions.map((option) => (
               <li key={option.id} className="flex flex-col gap-4 rounded-xl border border-ink-border p-5">
                 <div className="flex items-start justify-between gap-4">
@@ -116,10 +119,14 @@ export function PricingSection() {
                     <h4 className="font-display text-lg font-extrabold uppercase">{option.name}</h4>
                     <p className="text-sm font-semibold text-primary">{option.tagline}</p>
                   </div>
-                  <p className="font-display text-4xl font-black tabular-nums">
-                    ${option.price}
-                    {option.unit && <span className="text-base font-bold text-ink-muted">{option.unit}</span>}
-                  </p>
+                  {option.price === null ? (
+                    <p className="font-display text-2xl font-black uppercase">Call</p>
+                  ) : (
+                    <p className="font-display text-4xl font-black tabular-nums">
+                      ${option.price}
+                      {option.unit && <span className="text-base font-bold text-ink-muted">{option.unit}</span>}
+                    </p>
+                  )}
                 </div>
                 <ul className="flex flex-1 flex-col gap-2">
                   {option.details.map((detail) => (
@@ -129,7 +136,9 @@ export function PricingSection() {
                     </li>
                   ))}
                 </ul>
-                <CallButton label={`${option.name}, $${option.price}${option.unit}`} />
+                <CallButton
+                  label={option.price === null ? option.name : `${option.name}, $${option.price}${option.unit}`}
+                />
               </li>
             ))}
           </ul>

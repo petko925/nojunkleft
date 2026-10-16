@@ -50,8 +50,7 @@ const localBusiness = {
       ...trailerOptions.map((option) => ({
         "@type": "Offer",
         name: option.name,
-        price: option.price,
-        priceCurrency: "USD",
+        ...(option.price !== null && { price: option.price, priceCurrency: "USD" }),
       })),
     ],
   },
