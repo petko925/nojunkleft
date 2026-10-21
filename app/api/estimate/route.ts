@@ -176,9 +176,9 @@ IMPORTANT: Respond with ONLY a valid JSON object, no markdown or explanation.
 
 Load size guidelines:
 - small: Few items, fits in pickup truck (1-3 cubic yards) - bags, small furniture, minor cleanout
-- medium: Room cleanout, appliances, mattresses (4-8 cubic yards) - quarter trailer
-- large: Garage cleanout, estate items, multiple rooms (9-14 cubic yards) - half to 3/4 trailer
-- xl: Full house cleanout, construction debris, major renovation (15-20 cubic yards) - full trailer
+- medium: Room cleanout, appliances, mattresses (4-7 cubic yards) - half trailer
+- large: Garage cleanout, estate items, multiple rooms (8-11 cubic yards) - 3/4 trailer
+- xl: Full house cleanout, construction debris, major renovation (12-15 cubic yards) - full 15 cubic yard trailer
 
 JSON format:
 {

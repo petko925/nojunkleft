@@ -42,9 +42,9 @@ export async function POST(req: Request) {
 
 Size guidelines:
 - small: 1-3 cubic yards (pickup truck)
-- medium: 4-8 cubic yards (quarter trailer)
-- large: 9-14 cubic yards (half trailer)  
-- xl: 15-20 cubic yards (full trailer)`,
+- medium: 4-7 cubic yards (half of a 15 cubic yard trailer)
+- large: 8-11 cubic yards (three-quarters of a 15 cubic yard trailer)
+- xl: 12-15 cubic yards (full 15 cubic yard trailer)`,
         },
         {
           role: 'user',

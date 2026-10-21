@@ -2,7 +2,10 @@ import { Check, Phone, Sofa } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { LoadGauge } from "@/components/load-gauge"
 import { cn } from "@/lib/utils"
-import { business, loadTiers, singleItemPrice, trailerOptions } from "@/lib/business"
+import { business, loadTiers, payAsYouFill, singleItemPrice, trailerOptions } from "@/lib/business"
+
+const lowestLoadPrice = loadTiers[0].price
+const highestLoadPrice = loadTiers[loadTiers.length - 1].price
 
 function CallButton({ label, className }: { label: string; className?: string }) {
   return (
@@ -71,28 +74,44 @@ export function PricingSection() {
             <CallButton label={`single bulky item from $${singleItemPrice}`} className="bg-ink text-ink-foreground hover:bg-ink/90 sm:w-auto sm:px-6" />
           </div>
 
-          <div className="flex flex-col gap-4 rounded-xl border-2 border-dashed border-primary bg-card p-5 sm:flex-row sm:items-center">
-            <LoadGauge fraction={0.5} className="w-28 shrink-0" />
-            <div className="flex flex-1 flex-col gap-1">
-              <h4 className="font-display text-lg font-extrabold uppercase">
-                Not sure how much you have? Pay as you fill
-              </h4>
-              <p className="text-pretty text-sm leading-relaxed text-muted-foreground">
-                We come out, load everything, and look at the trailer when we&apos;re done. You pay for the load size you
-                actually filled &mdash; from ${loadTiers[0].price} for a 1/4 load up to $
-                {loadTiers[loadTiers.length - 1].price} for a full load. No guessing ahead of time.
+          <div className="flex flex-col gap-5 rounded-xl border-2 border-dashed border-primary bg-card p-5 md:flex-row md:items-center md:gap-8 md:p-6">
+            <div className="flex items-center gap-3 md:w-56 md:shrink-0 md:flex-col md:items-stretch">
+              <div className="grid w-28 shrink-0 grid-cols-4 gap-1 md:w-full" aria-hidden="true">
+                {loadTiers.map((tier) => (
+                  <LoadGauge key={tier.id} fraction={tier.fraction} className="w-full" />
+                ))}
+              </div>
+              <p className="font-display text-2xl font-black tabular-nums">
+                ${lowestLoadPrice}&ndash;${highestLoadPrice}
               </p>
             </div>
-            <CallButton label="pay as you fill" className="sm:w-auto sm:px-6" />
+            <div className="flex flex-1 flex-col gap-3">
+              <div className="flex flex-col">
+                <p className="text-sm font-semibold text-primary">{payAsYouFill.tagline}</p>
+                <h4 className="font-display text-lg font-extrabold uppercase">{payAsYouFill.name}</h4>
+              </div>
+              <ul className="flex flex-col gap-2">
+                {payAsYouFill.steps.map((step) => (
+                  <li key={step} className="flex gap-2 text-sm leading-relaxed text-muted-foreground">
+                    <Check className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+                    {step}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <CallButton label={payAsYouFill.name} className="md:w-auto md:px-6" />
           </div>
         </div>
 
         <div className="flex flex-col gap-4 rounded-2xl bg-ink p-5 text-ink-foreground md:p-8">
           <div className="flex flex-col gap-1">
-            <h3 className="font-display text-2xl font-black uppercase">Trailer Rental</h3>
-            <p className="text-ink-muted">Doing it yourself or need a few days to fill it? Rent our dump trailer.</p>
+            <h3 className="font-display text-2xl font-black uppercase">Trailer &amp; Truck Rental</h3>
+            <p className="text-ink-muted">
+              Doing it yourself or need a few days to fill it? Rent our 8 or 15 cubic yard dump trailer, or our dump
+              truck for heavy jobs.
+            </p>
           </div>
-          <ul className="grid gap-4 md:grid-cols-2">
+          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {trailerOptions.map((option) => (
               <li key={option.id} className="flex flex-col gap-4 rounded-xl border border-ink-border p-5">
                 <div className="flex items-start justify-between gap-4">
@@ -100,10 +119,14 @@ export function PricingSection() {
                     <h4 className="font-display text-lg font-extrabold uppercase">{option.name}</h4>
                     <p className="text-sm font-semibold text-primary">{option.tagline}</p>
                   </div>
-                  <p className="font-display text-4xl font-black tabular-nums">
-                    ${option.price}
-                    {option.unit && <span className="text-base font-bold text-ink-muted">{option.unit}</span>}
-                  </p>
+                  {option.price === null ? (
+                    <p className="font-display text-2xl font-black uppercase">Call</p>
+                  ) : (
+                    <p className="font-display text-4xl font-black tabular-nums">
+                      ${option.price}
+                      {option.unit && <span className="text-base font-bold text-ink-muted">{option.unit}</span>}
+                    </p>
+                  )}
                 </div>
                 <ul className="flex flex-1 flex-col gap-2">
                   {option.details.map((detail) => (
@@ -113,7 +136,9 @@ export function PricingSection() {
                     </li>
                   ))}
                 </ul>
-                <CallButton label={`${option.name}, $${option.price}${option.unit}`} />
+                <CallButton
+                  label={option.price === null ? option.name : `${option.name}, $${option.price}${option.unit}`}
+                />
               </li>
             ))}
           </ul>

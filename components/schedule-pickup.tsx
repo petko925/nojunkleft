@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { addBooking, formatDateKey } from "@/lib/bookings-store"
+import { bookableTrailers } from "@/lib/business"
 import { Skeleton } from "@/components/ui/skeleton"
 import { getAddressSuggestions, loadGooglePlacesScript, type AddressSuggestion } from "@/lib/address-autocomplete"
 
@@ -62,11 +63,7 @@ function generateCalendarDays(year: number, month: number, todayRef: Date) {
   return days
 }
 
-// Available trailers for booking
-const trailerOptions = [
-  { id: "alpha", name: "Trailer Alpha", description: "Large & XL loads (20 cubic yards)" },
-  { id: "bravo", name: "Trailer Bravo", description: "Small & Medium loads (10 cubic yards)" },
-]
+const trailerOptions = bookableTrailers
 
 export function SchedulePickup() {
   // Track mounted state to prevent hydration mismatch

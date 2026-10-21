@@ -86,7 +86,11 @@ export const trailerOptions = [
     tagline: "You tow",
     price: 99,
     unit: "/day",
-    details: ["Large dump trailer", "Pick it up, load it, dump it yourself", "Great for DIY remodels and yard work"],
+    details: [
+      "Pick an 8 or 15 cubic yard dump trailer",
+      "Pick it up, load it, dump it yourself",
+      "Great for DIY remodels and yard work",
+    ],
   },
   {
     id: "drop-off",
@@ -100,7 +104,35 @@ export const trailerOptions = [
       "We haul it away — dump fees included up to 2 tons",
     ],
   },
+  {
+    id: "dump-truck",
+    name: "Dump Truck Rental",
+    tagline: "Bigger jobs, heavier loads",
+    price: null,
+    unit: "",
+    details: [
+      "Built for dirt, concrete, roofing, and heavy debris",
+      "Rent it by the day for big projects",
+      "Call or text for rates and availability",
+    ],
+  },
 ] as const
+
+export const bookableTrailers = [
+  { id: "alpha", name: "Trailer Alpha", description: "Large & XL loads (15 cubic yards)" },
+  { id: "bravo", name: "Trailer Bravo", description: "Small & Medium loads (8 cubic yards)" },
+  { id: "dump-truck", name: "Dump Truck", description: "Heavy debris, dirt & concrete" },
+] as const
+
+export const payAsYouFill = {
+  name: "Pay As You Fill",
+  tagline: "Not sure how much you have?",
+  steps: [
+    "We show up with the trailer and load everything for you",
+    "When we're done, we look at how full the trailer is together",
+    "You pay the 1/4, 1/2, 3/4, or full load price — nothing more",
+  ],
+} as const
 
 /** Maps AI estimator size keys to load tiers so photo estimates match the menu. */
 export const estimateSizeToTier = {
