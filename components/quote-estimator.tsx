@@ -294,6 +294,13 @@ export function QuoteEstimator() {
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
             Upload a photo, enter your info, and get an instant estimate from No Junk Left Behind.
           </p>
+          <p className="mt-3 text-sm text-muted-foreground max-w-2xl mx-auto text-pretty">
+            AI quotes are subject to approval by our team. Rather have us take a look?{" "}
+            <a href={business.phoneHref} className="font-semibold text-primary underline underline-offset-4">
+              Request a free in-person estimate
+            </a>
+            .
+          </p>
         </div>
 
         <div className="max-w-2xl mx-auto">
@@ -361,6 +368,12 @@ export function QuoteEstimator() {
                     </div>
                     <p className="text-sm text-muted-foreground mt-2 text-pretty">
                       AI quotes are subject to approval. Final price is confirmed on-site.
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Prefer an in-person estimate?{" "}
+                      <a href={business.phoneHref} className="font-semibold text-primary underline underline-offset-4">
+                        Call {business.phoneDisplay}
+                      </a>
                     </p>
                   </div>
 

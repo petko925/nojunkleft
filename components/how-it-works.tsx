@@ -4,7 +4,7 @@ const steps = [
   {
     icon: Camera,
     title: "Snap a photo or pick a load size",
-    body: "Send us a picture for an AI estimate, or choose 1/4 to full load below.",
+    body: "Send us a picture for an AI estimate (subject to approval), choose 1/4 to full load below, or request an in-person estimate.",
   },
   {
     icon: Tag,
