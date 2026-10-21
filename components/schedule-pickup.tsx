@@ -14,7 +14,7 @@ import { getAddressSuggestions, loadGooglePlacesScript, type AddressSuggestion }
 const timeSlots = [
   { id: "morning", label: "Morning", time: "8:00 AM - 12:00 PM", available: true },
   { id: "afternoon", label: "Afternoon", time: "12:00 PM - 4:00 PM", available: true },
-  { id: "evening", label: "Evening", time: "4:00 PM - 7:00 PM", available: false },
+  { id: "evening", label: "Evening", time: "4:00 PM - 7:00 PM", available: true },
 ]
 
 // Generate calendar days using a reference "today" date to ensure consistency

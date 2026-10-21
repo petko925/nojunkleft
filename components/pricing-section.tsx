@@ -2,7 +2,7 @@ import { Check, Phone, Sofa } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { LoadGauge } from "@/components/load-gauge"
 import { cn } from "@/lib/utils"
-import { business, loadingAddOnPrice, loadTiers, singleItemPrice, trailerOptions } from "@/lib/business"
+import { business, loadTiers, singleItemPrice, trailerOptions } from "@/lib/business"
 
 function CallButton({ label, className }: { label: string; className?: string }) {
   return (
@@ -70,6 +70,21 @@ export function PricingSection() {
             </div>
             <CallButton label={`single bulky item from $${singleItemPrice}`} className="bg-ink text-ink-foreground hover:bg-ink/90 sm:w-auto sm:px-6" />
           </div>
+
+          <div className="flex flex-col gap-4 rounded-xl border-2 border-dashed border-primary bg-card p-5 sm:flex-row sm:items-center">
+            <LoadGauge fraction={0.5} className="w-28 shrink-0" />
+            <div className="flex flex-1 flex-col gap-1">
+              <h4 className="font-display text-lg font-extrabold uppercase">
+                Not sure how much you have? Pay as you fill
+              </h4>
+              <p className="text-pretty text-sm leading-relaxed text-muted-foreground">
+                We come out, load everything, and look at the trailer when we&apos;re done. You pay for the load size you
+                actually filled &mdash; from ${loadTiers[0].price} for a 1/4 load up to $
+                {loadTiers[loadTiers.length - 1].price} for a full load. No guessing ahead of time.
+              </p>
+            </div>
+            <CallButton label="pay as you fill" className="sm:w-auto sm:px-6" />
+          </div>
         </div>
 
         <div className="flex flex-col gap-4 rounded-2xl bg-ink p-5 text-ink-foreground md:p-8">
@@ -102,9 +117,6 @@ export function PricingSection() {
               </li>
             ))}
           </ul>
-          <p className="text-sm text-ink-muted">
-            Want us to do the loading? Add a crew for <strong className="text-ink-foreground">+${loadingAddOnPrice}/job</strong>.
-          </p>
         </div>
       </div>
     </section>

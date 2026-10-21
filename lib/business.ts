@@ -102,8 +102,6 @@ export const trailerOptions = [
   },
 ] as const
 
-export const loadingAddOnPrice = 75
-
 /** Maps AI estimator size keys to load tiers so photo estimates match the menu. */
 export const estimateSizeToTier = {
   small: loadTiers[0],

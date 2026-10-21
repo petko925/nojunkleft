@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
+import { business } from "@/lib/business"
 import { compressImage } from "@/lib/compress-image"
 import { getAddressSuggestions, loadGooglePlacesScript } from "@/lib/address-autocomplete"
 
@@ -293,6 +294,13 @@ export function QuoteEstimator() {
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
             Upload a photo, enter your info, and get an instant estimate from No Junk Left Behind.
           </p>
+          <p className="mt-3 text-sm text-muted-foreground max-w-2xl mx-auto text-pretty">
+            AI quotes are subject to approval by our team. Rather have us take a look?{" "}
+            <a href={business.phoneHref} className="font-semibold text-primary underline underline-offset-4">
+              Request a free in-person estimate
+            </a>
+            .
+          </p>
         </div>
 
         <div className="max-w-2xl mx-auto">
@@ -359,7 +367,13 @@ export function QuoteEstimator() {
                         : `$${result.quoteMin} – $${result.quoteMax}`}
                     </div>
                     <p className="text-sm text-muted-foreground mt-2">
-                      Final price confirmed on-site
+                      AI quote subject to approval. Final price confirmed on-site.
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Prefer an in-person estimate?{" "}
+                      <a href={business.phoneHref} className="font-semibold text-primary underline underline-offset-4">
+                        Call {business.phoneDisplay}
+                      </a>
                     </p>
                   </div>
 
