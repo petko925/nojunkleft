@@ -17,7 +17,7 @@ const archivo = Archivo({
 
 const title = 'Junk Removal in Contra Costa County | No Junk Left Behind'
 const description =
-  'Fixed-price junk removal in Concord, Walnut Creek, Antioch and all of Contra Costa County. Loads from $199, single items from $99, dump trailer rental $99/day. Call or text 707-298-4268.'
+  'Fixed-price junk removal in Concord, Walnut Creek, Antioch and all of Contra Costa County. Loads from $199, single items from $99, trailer drop-off and dump truck rental. Call or text 707-298-4268.'
 
 export const metadata: Metadata = {
   title,
