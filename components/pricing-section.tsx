@@ -105,13 +105,13 @@ export function PricingSection() {
 
         <div className="flex flex-col gap-4 rounded-2xl bg-ink p-5 text-ink-foreground md:p-8">
           <div className="flex flex-col gap-1">
-            <h3 className="font-display text-2xl font-black uppercase">Trailer &amp; Truck Rental</h3>
+            <h3 className="font-display text-2xl font-black uppercase">Trailer Drop-Off &amp; Dump Truck</h3>
             <p className="text-ink-muted">
-              Doing it yourself or need a few days to fill it? Rent our 8 or 15 cubic yard dump trailer, or our dump
-              truck for heavy jobs.
+              Need a few days to fill it? We drop off our 8 or 15 cubic yard dump trailer and haul it away when
+              you&apos;re done, or rent our dump truck for heavy jobs.
             </p>
           </div>
-          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-4 md:grid-cols-2">
             {trailerOptions.map((option) => (
               <li key={option.id} className="flex flex-col gap-4 rounded-xl border border-ink-border p-5">
                 <div className="flex items-start justify-between gap-4">
