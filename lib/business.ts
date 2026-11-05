@@ -81,18 +81,6 @@ export const singleItemPrice = 99
 
 export const trailerOptions = [
   {
-    id: "rental",
-    name: "Dump Trailer Rental",
-    tagline: "You tow",
-    price: 99,
-    unit: "/day",
-    details: [
-      "Pick an 8 or 15 cubic yard dump trailer",
-      "Pick it up, load it, dump it yourself",
-      "Great for DIY remodels and yard work",
-    ],
-  },
-  {
     id: "drop-off",
     name: "Trailer Drop-Off",
     tagline: "We deliver, you load, we haul",

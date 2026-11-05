@@ -6,7 +6,7 @@ const localBusiness = {
   "@type": "LocalBusiness",
   "@id": `${business.url}/#business`,
   name: business.name,
-  description: "Fixed-price junk removal and dump trailer rental in Contra Costa County, California.",
+  description: "Fixed-price junk removal and trailer drop-off in Contra Costa County, California.",
   url: business.url,
   telephone: "+1-707-298-4268",
   email: business.email,

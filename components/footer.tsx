@@ -18,7 +18,7 @@ export function Footer() {
         <div className="flex flex-col gap-4">
           <Logo variant="horizontal" size="md" />
           <p className="text-pretty text-sm leading-relaxed text-ink-muted">
-            Fixed-price junk removal and dump trailer rental in {business.region}, California.
+            Fixed-price junk removal and trailer drop-off in {business.region}, California.
           </p>
         </div>
 
